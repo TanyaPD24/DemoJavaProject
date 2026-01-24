@@ -1,10 +1,8 @@
-package com.saucedemo;
-
+package com.saucedemo.base_class;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.time.Duration;
 
@@ -14,11 +12,6 @@ public class BaseClass {
     public static final String BASE_URL = "https://www.saucedemo.com/";
     public static final String EXPECTED_TITLE = "Swag Labs";
     public static final String EXPECTED_TITLE_PRODUCT_PAGE = "Products";
-
-    public void setupDriver() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-    }
 
     public void getBaseUrl() {
         driver.get(BASE_URL);
@@ -70,7 +63,5 @@ public class BaseClass {
 
     }
 
-    public void closeWindow() {
-        driver.quit();
-    }
+
 }
