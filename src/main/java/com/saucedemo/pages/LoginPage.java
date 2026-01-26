@@ -1,17 +1,33 @@
-package com.saucedemo.base_class;
+package com.saucedemo.pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import java.time.Duration;
 
-public class BaseClass {
+public class LoginPage {
+    private WebDriver driver;
 
-    public static WebDriver driver;
+   // public static WebDriver driver;
     public static final String BASE_URL = "https://www.saucedemo.com/";
     public static final String EXPECTED_TITLE = "Swag Labs";
-    public static final String EXPECTED_TITLE_PRODUCT_PAGE = "Products";
+    // public static final String EXPECTED_TITLE_PRODUCT_PAGE = "Products";
+
+    @FindBy(xpath = "//input[@name='user-name']")
+    private WebElement userName;
+
+    @FindBy(xpath = "//input[@name='password']")
+    private WebElement userPassword;
+
+    @FindBy(xpath = "//input[@name='login-button']")
+    private WebElement buttonLogin;
+
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
 
     public void getBaseUrl() {
         driver.get(BASE_URL);
@@ -31,37 +47,24 @@ public class BaseClass {
     }
 
     public void input_userName() {
-        WebElement userName = driver.findElement(By.xpath("//input[@name='user-name']"));
         userName.click();
         userName.sendKeys("standard_user");
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
     }
 
     public void input_userPassword() {
-        WebElement userPassword = driver.findElement(By.xpath("//input[@name='password']"));
         userPassword.click();
         userPassword.sendKeys("secret_sauce");
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
     }
 
     public void clickButtonLogin() {
-        WebElement buttonLogin = driver.findElement(By.xpath("//input[@name='login-button']"));
         buttonLogin.click();
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
     }
 
-    public void assertTitleProductPage() {
-        String actualTitleProductPage = "Products";
-
-        if (actualTitleProductPage.equals(EXPECTED_TITLE_PRODUCT_PAGE)) {
-            System.out.println("Actual title ProductPage - OK - " + EXPECTED_TITLE_PRODUCT_PAGE);
-        } else {
-            System.out.println("not ok - " + actualTitleProductPage);
-        }
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
-    }
-
-
+//    public void assertTitleProductPage() {
+//        String actualTitleProductPage = "Products";
+//        Assert.assertEquals(actualTitleProductPage, "Products");
+//    }
 }
