@@ -1,36 +1,43 @@
 package com.saucedemo.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
 public class LoginPage {
-    private WebDriver driver;
+    private final WebDriver driver;
+    private final WebDriverWait wait;
 
-   // public static WebDriver driver;
-    public static final String BASE_URL = "https://www.saucedemo.com/";
+    public static final String LOGIN_URL = "https://www.saucedemo.com/";
     public static final String EXPECTED_TITLE = "Swag Labs";
     // public static final String EXPECTED_TITLE_PRODUCT_PAGE = "Products";
 
-    @FindBy(xpath = "//input[@name='user-name']")
+    @FindBy(id = "user-name")
     private WebElement userName;
 
-    @FindBy(xpath = "//input[@name='password']")
+    @FindBy(id = "password")
     private WebElement userPassword;
 
-    @FindBy(xpath = "//input[@name='login-button']")
+    @FindBy(id = "login-button")
     private WebElement buttonLogin;
+
+    @FindBy(css = "[data-test='error']")
+    private WebElement errorMessage;
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }
 
-    public void getBaseUrl() {
-        driver.get(BASE_URL);
+    public void open() {
+        driver.get(LOGIN_URL);
         String baseTitle = driver.getTitle();
         System.out.println("Expected title - " + baseTitle);
     }
@@ -46,25 +53,29 @@ public class LoginPage {
 
     }
 
-    public void input_userName() {
+    public void login(String username, String password) {
         userName.click();
-        userName.sendKeys("standard_user");
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-    }
-
-    public void input_userPassword() {
+        userName.sendKeys(username);
         userPassword.click();
-        userPassword.sendKeys("secret_sauce");
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        userPassword.sendKeys(password);
+        buttonLogin.click();
     }
 
-    public void clickButtonLogin() {
+    public void emptyLoginField(String password) {
+        userPassword.sendKeys(password);
         buttonLogin.click();
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+       // Assert.assertTrue(isErrorMessageDisplayed(),"Epic sadface: Password is required");
+    }
+
+    public void closeErrorMessage() {
+        wait.until(ExpectedConditions.visibilityOf(errorMessage)).isDisplayed();
+        WebElement closeButton = driver.findElement(By.cssSelector(".error-button"));
+        closeButton.click();
+        }
     }
 
 //    public void assertTitleProductPage() {
 //        String actualTitleProductPage = "Products";
 //        Assert.assertEquals(actualTitleProductPage, "Products");
 //    }
-}

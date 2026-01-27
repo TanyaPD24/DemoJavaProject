@@ -8,20 +8,25 @@ public class LoginTest extends BaseTest {
     @Test()
     public void testLogin() {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.getBaseUrl();
+        loginPage.open();
         loginPage.assertTitle();
-        loginPage.input_userName();
-        loginPage.input_userPassword();
-        loginPage.clickButtonLogin();
+        loginPage.login("standard_user", "secret_sauce");
         //loginPage.assertTitle();
 
 //        ProductPage productPage = new ProductPage(driver);
-//
 //        productPage.selectProduct();
 //        driver.navigate().back();
 //        productPage.selectMenuAbout();
     }
+
+    @Test
+    public void emptyLogin() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
+        loginPage.emptyLoginField("secret_sauce");
+        loginPage.closeErrorMessage();
     }
+}
 
 
 
