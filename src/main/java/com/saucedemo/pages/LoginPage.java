@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import java.time.Duration;
 
@@ -16,7 +17,7 @@ public class LoginPage {
 
     public static final String LOGIN_URL = "https://www.saucedemo.com/";
     public static final String EXPECTED_TITLE = "Swag Labs";
-    // public static final String EXPECTED_TITLE_PRODUCT_PAGE = "Products";
+    public static final String EXPECTED_TITLE_PRODUCT_PAGE = "Products";
 
     @FindBy(id = "user-name")
     private WebElement userName;
@@ -29,6 +30,9 @@ public class LoginPage {
 
     @FindBy(css = "[data-test='error']")
     private WebElement errorMessage;
+
+    @FindBy(xpath = "//span[@class='title']")
+    public WebElement actualNameProductPage;
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
@@ -54,28 +58,33 @@ public class LoginPage {
     }
 
     public void login(String username, String password) {
+        wait.until((ExpectedConditions.visibilityOf(userName)));
         userName.click();
         userName.sendKeys(username);
         userPassword.click();
         userPassword.sendKeys(password);
         buttonLogin.click();
+        wait.until(ExpectedConditions.or(
+                ExpectedConditions.visibilityOf(actualNameProductPage)));
+        System.out.println("Успешно залогинились и перешли на страницу продуктов");
+    }
+
+    public void assertNameProductPage() {
+        wait.until(ExpectedConditions.visibilityOf(actualNameProductPage));
+        String actualProductNameText = actualNameProductPage.getText();
+        Assert.assertEquals(actualProductNameText, EXPECTED_TITLE_PRODUCT_PAGE);
     }
 
     public void emptyLoginField(String password) {
         userPassword.sendKeys(password);
         buttonLogin.click();
-
-       // Assert.assertTrue(isErrorMessageDisplayed(),"Epic sadface: Password is required");
+        wait.until(ExpectedConditions.visibilityOf(errorMessage));
+        Assert.assertTrue(errorMessage.isDisplayed(),"Epic sadface: Password is required");
     }
 
     public void closeErrorMessage() {
         wait.until(ExpectedConditions.visibilityOf(errorMessage)).isDisplayed();
         WebElement closeButton = driver.findElement(By.cssSelector(".error-button"));
         closeButton.click();
-        }
     }
-
-//    public void assertTitleProductPage() {
-//        String actualTitleProductPage = "Products";
-//        Assert.assertEquals(actualTitleProductPage, "Products");
-//    }
+}

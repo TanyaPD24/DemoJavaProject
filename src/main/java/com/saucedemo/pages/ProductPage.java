@@ -11,7 +11,8 @@ import java.time.Duration;
 public class ProductPage {
     private WebDriver driver;
 
-    public static final String CURRENT_URL = "https://saucelabs.com/";
+    public static final String PRODUCT_URL = "https://saucelabs.com/";
+    public static final String EXPECTED_TITLE_PP = "Swag Labs";
 
     WebElement selectProduct1 = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']"));
     WebElement selectProduct2 = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-bike-light']"));

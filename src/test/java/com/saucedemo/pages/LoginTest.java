@@ -11,7 +11,7 @@ public class LoginTest extends BaseTest {
         loginPage.open();
         loginPage.assertTitle();
         loginPage.login("standard_user", "secret_sauce");
-        //loginPage.assertTitle();
+        loginPage.assertNameProductPage();
 
 //        ProductPage productPage = new ProductPage(driver);
 //        productPage.selectProduct();
