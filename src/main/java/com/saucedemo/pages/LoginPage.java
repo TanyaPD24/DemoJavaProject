@@ -18,6 +18,8 @@ public class LoginPage {
     public static final String LOGIN_URL = "https://www.saucedemo.com/";
     public static final String EXPECTED_TITLE = "Swag Labs";
     public static final String EXPECTED_TITLE_PRODUCT_PAGE = "Products";
+    public static final String ERROR_INVALID_CREDENTIALS = "Epic sadface: Username and password do " +
+            "not match any user in this service";
 
     @FindBy(id = "user-name")
     private WebElement userName;
@@ -75,11 +77,23 @@ public class LoginPage {
         Assert.assertEquals(actualProductNameText, EXPECTED_TITLE_PRODUCT_PAGE);
     }
 
-    public void emptyLoginField(String password) {
+    public void fillPassword(String password) {
+        wait.until(ExpectedConditions.visibilityOf(userPassword));
         userPassword.sendKeys(password);
         buttonLogin.click();
         wait.until(ExpectedConditions.visibilityOf(errorMessage));
-        Assert.assertTrue(errorMessage.isDisplayed(),"Epic sadface: Password is required");
+        Assert.assertTrue(errorMessage.isDisplayed(), "Epic sadface: Password is required");
+    }
+
+    public void fillLogin(String password) {
+        userPassword.sendKeys(password);
+        buttonLogin.click();
+        wait.until(ExpectedConditions.visibilityOf(errorMessage));
+        Assert.assertTrue(errorMessage.isDisplayed(), "Epic sadface: Password is required");
+    }
+
+    public void emptyFields() {
+        buttonLogin.click();
     }
 
     public void closeErrorMessage() {
@@ -87,4 +101,37 @@ public class LoginPage {
         WebElement closeButton = driver.findElement(By.cssSelector(".error-button"));
         closeButton.click();
     }
+
+    public void loginWithInvalidCredentials(String username, String password) {
+        wait.until(ExpectedConditions.visibilityOf(userName));
+        userName.click();
+        userName.sendKeys(username);
+        userPassword.click();
+        userPassword.sendKeys(password);
+        buttonLogin.click();
+        wait.until(ExpectedConditions.visibilityOf(errorMessage));
+        String actualError = errorMessage.getText();
+        Assert.assertEquals(actualError, ERROR_INVALID_CREDENTIALS,
+                "Epic sadface: Username and password do not match any user in this service");
+        System.out.println("Проверка с неверными данными: " + actualError);
+    }
+
+    public void loginWithSpecialCharacters() {
+        wait.until(ExpectedConditions.visibilityOf(userName));
+
+        String specialUsername = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+        String specialPassword = specialUsername;
+
+        userName.click();
+        userName.sendKeys(specialUsername);
+        userPassword.click();
+        userPassword.sendKeys(specialPassword);
+        buttonLogin.click();
+
+        wait.until(ExpectedConditions.visibilityOf(errorMessage));
+        String actualError = errorMessage.getText();
+        Assert.assertEquals(actualError, ERROR_INVALID_CREDENTIALS,
+                "Epic sadface: Username and password do not match any user in this service");
+    }
+
 }
