@@ -1,14 +1,22 @@
 package com.saucedemo.pages;
 
 import com.saucedemo.base.BaseTest;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class LoginTest extends BaseTest {
 
-    @Test()
-    public void testLogin() {
-        LoginPage loginPage = new LoginPage(driver);
+    private LoginPage loginPage;
+
+    @BeforeMethod
+    public void setUpLoginPage() {
+        loginPage = new LoginPage(driver);
         loginPage.open();
+    }
+
+    @Test()
+    public void login() {
         loginPage.assertTitle();
         loginPage.login("standard_user", "secret_sauce");
         loginPage.assertNameProductPage();
@@ -20,46 +28,31 @@ public class LoginTest extends BaseTest {
 
     @Test
     public void emptyLogin() {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-        loginPage.fillPassword("secret_sauce");
+        loginPage.login(null, "secret_sauce");
         loginPage.closeErrorMessage();
     }
 
     @Test
     public void emptyPassword() {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-        loginPage.fillLogin("secret_sauce");
+        loginPage.login("standard_user", null);
+        loginPage.assertErrorMessageForPassword();
         loginPage.closeErrorMessage();
     }
 
     @Test
     public void emptyLoginAndPassword() {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-        loginPage.emptyFields();
+        loginPage.login(null, null);
         loginPage.closeErrorMessage();
     }
 
     @Test()
-    public void testInvalidLogin() {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-        loginPage.loginWithInvalidCredentials("test", "test");
+    public void fillWithInvalidChars() {
+        loginPage.login("test", "test");
+        loginPage.assertErrorMessageForCredentials();
     }
 
     @Test()
-    public void testWithInvalidChars() {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-        loginPage.loginWithSpecialCharacters();
-    }
-
-    @Test()
-    public void testWithSpecialChars() {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.open();
-        loginPage.loginWithSpecialCharacters();
+    public void fillWithSpecialChars() {
+        loginPage.login("!@#$%^&*()_+-=[]{}|;:,.<>?", "!@#$%^&*()_+-=[]{}|;:,.<>?");
     }
 }
