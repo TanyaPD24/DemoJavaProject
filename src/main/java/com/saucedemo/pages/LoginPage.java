@@ -42,12 +42,6 @@ public class LoginPage {
         PageFactory.initElements(driver, this);
     }
 
-    public void open() {
-        driver.get(LOGIN_URL);
-        String baseTitle = driver.getTitle();
-        System.out.println("Expected title - " + baseTitle);
-    }
-
     public void assertTitle() {
         String actualTitle = driver.getTitle();
 
@@ -57,6 +51,12 @@ public class LoginPage {
             System.out.println("not ok - " + actualTitle);
         }
 
+    }
+
+    public void open () {
+        driver.get(LOGIN_URL);
+        String baseTitle = driver.getTitle();
+        System.out.println("Expected title - " + baseTitle);
     }
 
     public void login(String username, String password) {
