@@ -41,8 +41,8 @@ public class LoginTest extends BaseTest {
     }
 
     @Test
-    public void fillWithInvalidChars() {
-        loginPage.login("test", "test");
+    public void fillWithInvalidUserName() {
+        loginPage.login("test", "secret_sauce");
         loginPage.assertErrorMessageForCredentials();
     }
 

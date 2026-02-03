@@ -18,7 +18,7 @@ public class LoginPage {
     public static final String LOGIN_URL = "https://www.saucedemo.com/";
     public static final String EXPECTED_TITLE = "Swag Labs";
     public static final String EXPECTED_TITLE_PRODUCT_PAGE = "Products";
-    public static final String ERROR_INVALID_CREDENTIALS = "Epic sadface: Username and password do " +
+    public static final String ERROR_INVALID_CREDENTIALS = "1Epic sadface: Username and password do " +
             "not match any user in this service";
 
     @FindBy(id = "user-name")
@@ -91,7 +91,7 @@ public class LoginPage {
         wait.until(ExpectedConditions.visibilityOf(errorMessage));
         String actualError = errorMessage.getText();
         Assert.assertEquals(actualError, ERROR_INVALID_CREDENTIALS,
-                "Epic sadface: Username and password do not match any user in this service");
-        System.out.println("Проверка с неверными данными: " + actualError);
+                "Error massage does not match expected");
+        System.out.println("Прверка с неверными данными: " + actualError);
     }
 }

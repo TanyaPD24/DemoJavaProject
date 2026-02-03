@@ -15,12 +15,16 @@ public class ProductTest extends BaseTest {
         loginPage.open();
         loginPage.login("standard_user", "secret_sauce");
         productPage = new ProductPage(driver);
+        loginPage.assertNameProductPage();
         System.out.println("Current URL: " + driver.getCurrentUrl());
         System.out.println("Page title: " + driver.getTitle());
     }
 
     @Test
-    public void testProduct() {
-        productPage.selectProduct();
+    public void selectFirstProductInProductPage() {
+        productPage.selectFirstProduct();
+        productPage.clickCart();
+        productPage.assertAddFirstProduct();
+        productPage.removeFirstProduct();
     }
 }
