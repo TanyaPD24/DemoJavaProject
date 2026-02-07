@@ -1,5 +1,6 @@
 package com.saucedemo.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -12,7 +13,7 @@ import java.time.Duration;
 
 
 public class ProductPage {
-    private  WebDriver driver;
+    private WebDriver driver;
     private final WebDriverWait wait;
 
     //public static final String PRODUCT_URL = "https://www.saucedemo.com/inventory.html";
@@ -36,7 +37,7 @@ public class ProductPage {
     @FindBy(id = "remove-sauce-labs-backpack")
     private WebElement removeButtonFirstProduct;
 
-    @FindBy(id= "shopping_cart_container")
+    @FindBy(id = "shopping_cart_container")
     private WebElement price1FirstProduct;
 
     @FindBy(css = ".cart_item .inventory_item_name")
@@ -55,7 +56,7 @@ public class ProductPage {
     }
 
     public void clickCart() {
-        cart.click();
+        //cart.click();
         driver.get(CART_PAGE_URL);
         wait.until(ExpectedConditions.urlToBe(CART_PAGE_URL));
         System.out.println("Перешли в корзину. URL: " + driver.getCurrentUrl());
@@ -75,5 +76,8 @@ public class ProductPage {
         System.out.println("Прверка названия первого товара: " + actualNameFirstProduct);
     }
 
-
+    public void assertRemoveFirstProduct() {
+        wait.until(ExpectedConditions.invisibilityOf(removeButtonFirstProduct));
+        System.out.println("Первый товар удален из корзины");
+    }
 }
