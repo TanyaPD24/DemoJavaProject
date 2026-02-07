@@ -26,5 +26,6 @@ public class ProductTest extends BaseTest {
         productPage.clickCart();
         productPage.assertAddFirstProduct();
         productPage.removeFirstProduct();
+        productPage.assertRemoveFirstProduct();
     }
 }
